@@ -5,8 +5,10 @@ import base64
 from io import BytesIO
 import subprocess
 import os
+from flask import abort
 
 script_dir = os.path.dirname(__file__)
+print(script_dir)
 
 #initialise app
 app = Flask(__name__)
@@ -35,9 +37,10 @@ def analyse():
 
 	return render_template('results.html', name=name)
 
-@app.route('/<path:req_path>')
+@app.route('/results/', defaults={'req_path': ''})
+@app.route('/results/<path:req_path>')
 def dir_listing(req_path):
-    BASE_DIR = script_dir
+    BASE_DIR = script_dir + "/output"
 
     # Joining the base and the requested path
     abs_path = os.path.join(BASE_DIR, req_path)
